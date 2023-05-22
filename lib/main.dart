@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:tranking_map/conectivity/conectivity.dart';
 import 'package:tranking_map/crop_img/img_crop.dart';
 import 'package:tranking_map/device_info/device_info.dart';
@@ -22,34 +19,25 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height*0.6,
+          height: MediaQuery.of(context).size.height * 0.6,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,16 +49,29 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => const ImageCrop()),
                   );
                 },
-                child: Text('Img Crop'),
+                child: const Text(
+                  'Img Crop',
+                  style: TextStyle(
+                    color: Colors.blueAccent,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MapGeolocation()),
+                    MaterialPageRoute(
+                        builder: (context) => const MapGeolocation()),
                   );
                 },
-                child: Text('Map - Geolocation'),
+                child: const Text('Map - Geolocation',
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    )),
               ),
               TextButton(
                 onPressed: () {
@@ -79,16 +80,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => const DeviceInfo()),
                   );
                 },
-                child: Text('Device Info'),
+                child: const Text('Device Info',
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    )),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Conectivity()),
+                    MaterialPageRoute(
+                        builder: (context) => const Conectivity()),
                   );
                 },
-                child: Text('Check conectivity'),
+                child: const Text('Check connectivity',
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    )),
               ),
             ],
           ),
