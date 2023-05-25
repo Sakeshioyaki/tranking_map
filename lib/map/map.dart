@@ -12,6 +12,8 @@ class MapGeolocation extends StatefulWidget {
 
 class _MapGeolocationState extends State<MapGeolocation> {
   List<LatLng> tappedPoints = [];
+  LatLng? point1;
+  LatLng? point2;
   LatLng? currentPosition;
   late final MapController _mapController;
   String action = '';
@@ -36,16 +38,19 @@ class _MapGeolocationState extends State<MapGeolocation> {
     }).toList();
     return Scaffold(
       body: SafeArea(
-          bottom: false,
+        bottom: false,
         child: Column(
           children: [
             const Padding(
               padding: EdgeInsets.only(top: 8, bottom: 8),
               child: Text('Tap to add new mark'),
             ),
-             Padding(
+            Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 10),
-              child: Text(action, style: const TextStyle(color: Colors.red),),
+              child: Text(
+                action,
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
             Flexible(
               child: FlutterMap(
@@ -69,18 +74,180 @@ class _MapGeolocationState extends State<MapGeolocation> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return buildBottomSheet(context);
+              });
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
     );
+  }
+
+  Widget buildBottomSheet(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Enter point position',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18),
+              ),
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.close,
+                  size: 20,
+                  weight: 5,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Point 1',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Flexible(
+                flex: 1,
+                child: TextField(
+                  obscureText: true,
+                  onChanged: (avlue) {
+                    setState(() {});
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Kinh độ',
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: TextField(
+                  obscureText: true,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Vĩ Độ',
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+          const SizedBox(height: 30),
+          const Text(
+            'Point 2',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Flexible(
+                flex: 1,
+                child: TextField(
+                  obscureText: true,
+                  onChanged: (avlue) {
+                    setState(() {});
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Kinh độ',
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: TextField(
+                  obscureText: true,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Vĩ Độ',
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // TextButton(
+          //   onPressed: () {},
+          //   child: Container(
+          //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20,),
+          //     decoration: const BoxDecoration(
+          //       gradient: LinearGradient(
+          //         colors: <Color>[
+          //           Color(0xFF0D47A1),
+          //           Color(0xFF1976D2),
+          //           Color(0xFF42A5F5),
+          //         ],
+          //       ),
+          //     ),
+          //     child: Text('Vẽ Line'),
+          //   ),
+          // )
+        ],
+      ),
+    );
+  }
+
+  void showBottomSheet() {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200,
+            color: Colors.amber,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text('Modal BottomSheet'),
+                  ElevatedButton(
+                    child: const Text('Close BottomSheet'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   void _handleTap(TapPosition tapPosition, LatLng latlng) {
     setState(() {
       tappedPoints.add(latlng);
-      action = 'Bạn vừa tap vào điểm : Kinh độ : ${latlng.latitude.toStringAsFixed(3)}  -  Vĩ độ : ${latlng.longitude.toStringAsFixed(3)}';
+      action =
+          'Bạn vừa tap vào điểm : Kinh độ : ${latlng.latitude.toStringAsFixed(3)}  -  Vĩ độ : ${latlng.longitude.toStringAsFixed(3)}';
     });
   }
 
@@ -116,7 +283,8 @@ class _MapGeolocationState extends State<MapGeolocation> {
     _mapController.move(LatLng(position.latitude, position.longitude), 16);
     setState(() {
       tappedPoints.add(LatLng(position.latitude, position.longitude));
-      action = 'Tọa độ của bạn : Kinh độ : ${position.latitude}  -  Vĩ độ : ${position.longitude}';
+      action =
+          'Tọa độ của bạn : Kinh độ : ${position.latitude}  -  Vĩ độ : ${position.longitude}';
     });
   }
 }
